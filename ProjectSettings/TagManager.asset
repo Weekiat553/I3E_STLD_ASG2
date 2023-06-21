@@ -7,6 +7,11 @@ TagManager:
   - tele
   - tele2
   - gun
+  - SummonGuard
+  - gate
+  - KeyOne
+  - ground
+  - tele3
   layers:
   - Default
   - TransparentFX

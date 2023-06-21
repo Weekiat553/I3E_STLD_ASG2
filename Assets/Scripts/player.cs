@@ -4,12 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class player : MonoBehaviour
 {
     //Movement speed
     Vector3 movementInput = Vector3.zero;
-    public float movementSpeed = 0.05f;
+    public float movementSpeed;
     //Rotation speed
     Vector3 rotationInput = Vector3.zero;
     public float rotationSpeed = 1f;
@@ -29,9 +30,18 @@ public class player : MonoBehaviour
     public Rigidbody rb;
     public bool iWanDie = false;
     public bool pickGun = false;
-    public GameObject GunOnPlayer;
-    public GameObject Gun;
-
+    public GameObject gun;
+    public Transform head;
+    public GameObject PlayerGun;
+    bool mouseClick = false;
+    public float stamina;
+    public float maxStamina;
+    public float runSpeed;
+    
+    void Start()
+    {
+       
+    }
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Collectables")
@@ -87,13 +97,13 @@ public class player : MonoBehaviour
         {
             SceneManager.LoadScene(1);
         }
-
         else if (collision.gameObject.tag == "tele2")
         {
             SceneManager.LoadScene(2);
         }
+     
     }
-        public void OnCollisionStay(Collision collision)
+    public void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Collectables")
         {
@@ -101,7 +111,7 @@ public class player : MonoBehaviour
         }
 
     }
-        
+
     public void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.tag == "Collectables")
@@ -130,14 +140,12 @@ public class player : MonoBehaviour
         movementInput = value.Get<Vector2>();
     }
 
+    void OnShiftKey()
+    {
+      
+    }
 
     // on space key, character can jump
-
-
-    void OnEkey()
-    {
-       
-    }
 
     void OnSpaceKey()
     {
@@ -167,12 +175,8 @@ public class player : MonoBehaviour
     //  }
 
 
-    void Update()
+    public void Update()
     {
-        if (iWanDie == true)
-        {
-            return;
-        }
 
         Vector3 forwardDir = transform.forward;
         forwardDir *= movementInput.y;
@@ -189,15 +193,12 @@ public class player : MonoBehaviour
         //Limitation
 
         Camera.rotation = Quaternion.Euler(headRot);
-         
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        RaycastHit hit;
-            if(Physics.Raycast(ray, out hit) && hit.collider.tag == "gun")
-            {
-                pickGun = true;
-                Gun.SetActive(true);
-            }
 
+        if (iWanDie == true)
+        {
+            return;
+        }
 
     }
+
 }

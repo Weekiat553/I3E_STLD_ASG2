@@ -42,9 +42,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ShiftKey",
+                    "name": "SprintStart",
                     "type": "Button",
-                    "id": "a40d6b7b-5a27-4871-b305-12e586afaf04",
+                    "id": "41c5607d-5343-4ef7-a002-a09251c8a9cb",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SprintFinish",
+                    "type": "Button",
+                    "id": "44931f4b-87bf-4778-a009-7aaa2b7d0e7c",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -285,12 +294,23 @@
                 },
                 {
                     "name": "",
-                    "id": "fa68955f-1f2e-404a-a5f6-f468d9962fbc",
+                    "id": "a436a17a-a027-4fca-828f-3fc0f46249b4",
                     "path": "<Keyboard>/shift",
-                    "interactions": "",
+                    "interactions": "Press",
                     "processors": "",
                     "groups": "",
-                    "action": "ShiftKey",
+                    "action": "SprintStart",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1a27a1d-ef07-407c-a3fb-ece19c6c2c3c",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "Press(behavior=1)",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SprintFinish",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

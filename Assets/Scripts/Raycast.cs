@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Raycast : MonoBehaviour
 {
@@ -8,16 +9,25 @@ public class Raycast : MonoBehaviour
     
     public GameObject CrossHair;
     public GameObject PlayerGun;
-    //public bool pickGun = false;
     public Transform head;
     Camera cam;
     bool mouseClick = false;
+    public GameObject button;
+    public GameObject sphere;
+    public GameObject gen;
+    public GameObject healthgen;
+    public GameObject balls;
+    public GameObject reactor;
+    public bool keyboss = false;
+    int count = 0;
+    public bool Key = false;
+
     // Start is called before the first frame update
 
     void Start()
     {
         cam = Camera.main;
-        print(cam.name);
+        //print(cam.name);
     }
 
 
@@ -25,7 +35,7 @@ public class Raycast : MonoBehaviour
     {
         
 
-        // Draw ray
+        /// Draw ray
         Vector3 mousePos = Input.mousePosition;
         mousePos.z = 100f;
         mousePos = cam.ScreenToWorldPoint(mousePos);
@@ -40,13 +50,55 @@ public class Raycast : MonoBehaviour
             RaycastHit hit;
 
 
-            if (Physics.Raycast(ray, out hit, 100) && hit.collider.tag == "gun")
+            if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "gun")
             {
                 //pickGun = true;
                 PlayerGun.SetActive(true);
                 CrossHair.SetActive(true);
+
+            }
+
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "KeyOne")
+            {
+                Destroy(hit.collider.gameObject);
+
+            }
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "KeyTwo")
+            {
+                Destroy(hit.collider.gameObject);
+                keyboss = true;
+                Debug.Log("True");
+            }
+
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Sphere")
+            {
+                sphere.SetActive(true);
+                Destroy(hit.collider.gameObject);
+                count += 1;
+            }
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Gen")
+            {
+                gen.SetActive(true);
+                count += 1;
+            }
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Reactor")
+            {
+                reactor.SetActive(true);
+                count += 1;
+            }
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Healthgen")
+            {
+                healthgen.SetActive(true);
+                count += 1;
+
+            }
+            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Balls")
+            {
+                balls.SetActive(true);
+                count += 1;
             }
         }
+
     }
 
 

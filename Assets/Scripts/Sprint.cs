@@ -4,18 +4,27 @@ using UnityEngine;
 
 public class Sprint : MonoBehaviour
 {
+    float stamina = 5;
+    float maxStamina = 5;
+    float runSpeed;
+    float walkSpeed;
     player pScript;
-    public float speedBoost = 10f;
+    bool isRunning;
 
-    float stamina = 5, maxStamina = 5;
     void Start()
     {
         pScript = GetComponent<player>();
+        walkSpeed = pScript.movementSpeed;
+        runSpeed = walkSpeed * 4;
     }
 
+    void SetRunning(bool isRunning)
+    {
+        this.isRunning = isRunning;
+     //   pScript.movementSpeed;
+    }
     // Update is called once per frame
     void Update()
     {
-        
     }
 }

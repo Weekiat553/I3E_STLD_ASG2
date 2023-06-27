@@ -12,6 +12,15 @@ TagManager:
   - KeyOne
   - ground
   - tele3
+  - Heal
+  - ElevatorBtn
+  - damage
+  - tele4
+  - Sphere
+  - Healthgen
+  - Reactor
+  - Gen
+  - KeyTwo
   layers:
   - Default
   - TransparentFX

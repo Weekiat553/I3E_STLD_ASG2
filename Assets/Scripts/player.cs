@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 using TMPro;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class player : MonoBehaviour
 {
@@ -34,14 +35,17 @@ public class player : MonoBehaviour
     public Transform head;
     public GameObject PlayerGun;
     bool mouseClick = false;
-    public float stamina;
-    public float maxStamina;
-    public float runSpeed;
-    
+    bool sprint;
+    public Image staminaBar;
+
+
     void Start()
     {
        
     }
+
+  
+
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Collectables")
@@ -95,13 +99,25 @@ public class player : MonoBehaviour
 
         else if (collision.gameObject.tag == "tele")
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(2);
         }
         else if (collision.gameObject.tag == "tele2")
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
         }
-     
+        else if (collision.gameObject.tag == "tele3")
+        {
+            SceneManager.LoadScene(3);
+        }
+
+        else if (collision.gameObject.tag == "tele4")
+        {
+            SceneManager.LoadScene(4);
+        }
+
+
+
+
     }
     public void OnCollisionStay(Collision collision)
     {
@@ -140,9 +156,14 @@ public class player : MonoBehaviour
         movementInput = value.Get<Vector2>();
     }
 
-    void OnShiftKey()
+    void OnSprintStart()
     {
-      
+        sprint = true;
+
+    }
+    void OnSprintFinish()
+    {
+        sprint = false;
     }
 
     // on space key, character can jump
@@ -156,16 +177,7 @@ public class player : MonoBehaviour
         }
     }
 
-    //   void SpawnPlayerOnLoad(Scene prev, Scene next)
-    //   {
-    //       Debug.Log("Entering scene is : " + next.buildIndex);
-    //       if (activePlayer == null)
-    //      {
-    //           GameObject player = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity);
-    //           activePlayer = player.GetComponent<PlayerScript>();
-    //       }
-    //       else
-    //      {
+
     //PlayerSpawnSpot marker = FindObjectOfType<PlayerSpawnSpot>();
 
     //activePlayer.transform.position = marker.transform.position;
@@ -185,7 +197,7 @@ public class player : MonoBehaviour
         rightDir *= movementInput.x;
 
 
-        transform.position += (forwardDir + rightDir) * movementSpeed;
+        //transform.position += (forwardDir + rightDir) * movementSpeed;
         //Rotate left and right
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles + new Vector3(0, rotationInput.y, 0) * rotationSpeed);
         //Rotate up and down
@@ -199,6 +211,23 @@ public class player : MonoBehaviour
             return;
         }
 
+        if (sprint && staminaBar.fillAmount > 0)
+        {
+            Debug.Log("sprint");
+            GetComponent<Rigidbody>().MovePosition(transform.position + (forwardDir + rightDir) * 0.2f);
+            staminaBar.fillAmount -= 0.25f * Time.deltaTime;
+        }
+
+        else if(sprint && staminaBar.fillAmount <= 0)
+        {
+            GetComponent<Rigidbody>().MovePosition(transform.position + (forwardDir + rightDir) * movementSpeed);
+        }
+
+        else if(!sprint && staminaBar.fillAmount >= 0)
+        {
+            GetComponent<Rigidbody>().MovePosition(transform.position + (forwardDir + rightDir) * movementSpeed);
+            staminaBar.fillAmount += 0.35f * Time.deltaTime;
+        }
     }
 
 }

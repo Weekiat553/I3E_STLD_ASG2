@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public float health = 50f;
+    public float MaxHealth = 50f;
     public float MaxSpeed;
     private float Speed;
 
@@ -26,14 +26,20 @@ public class Enemy : MonoBehaviour
     private bool CanAttack = true;
     public bool iWanDie = false;
 
+    public float CurrentHealth;
+    public HealthBar HealthBar;
+
     void Start()
     {
         Speed = MaxSpeed;
+        CurrentHealth = MaxHealth;
+        HealthBar.SetMaxHealth(MaxHealth);
     }
     public void TakeDamage(float amount)
     {
-        health -= amount;
-        if (health <= 0f)
+        CurrentHealth -= amount;
+        HealthBar.SetHealth(CurrentHealth);
+        if (CurrentHealth <= 0f)
         {
             //Die Animation
             GetComponent<Animator>().SetTrigger("EDeathTrigger");
@@ -50,6 +56,7 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        
         //Detect player in range
         if (iWanDie == true)
         {

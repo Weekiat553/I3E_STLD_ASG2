@@ -8,6 +8,8 @@ public class PlayerHealth : MonoBehaviour
     public float MaxHealth;
     public HealthBar HealthBar;
     public float healing;
+    public float ballDamage;
+    public bool death = false;
     [SerializeField] public float CurrentHealth;
 
     void Start()
@@ -30,6 +32,11 @@ public class PlayerHealth : MonoBehaviour
                 Destroy(collision.gameObject);
             }
         }
+        else if (collision.gameObject.tag == "damage")
+        {
+            Debug.Log("gay");
+            CurrentHealth -= ballDamage;
+        }
     }
 
         public void TakeDamage(float Amount)
@@ -39,6 +46,7 @@ public class PlayerHealth : MonoBehaviour
         if(CurrentHealth <= 0)
         {
             Debug.Log("Player died");
+            death = true;
         }
 
 

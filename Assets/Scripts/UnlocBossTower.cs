@@ -7,7 +7,8 @@ public class UnlocBossTower : MonoBehaviour
     public void buttionMethode()
     {
 
-        GetComponent<Animator>().SetTrigger("BossStairs");
+        Debug.Log("Hello");
+        GetComponent<Animator>().SetTrigger("BossEle");
 
     }
 }

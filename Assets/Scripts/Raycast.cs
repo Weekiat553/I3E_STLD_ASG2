@@ -27,7 +27,7 @@ public class Raycast : MonoBehaviour
     void Start()
     {
         cam = Camera.main;
-        //print(cam.name);
+        print(cam.name);
     }
 
 
@@ -37,7 +37,7 @@ public class Raycast : MonoBehaviour
 
         /// Draw ray
         Vector3 mousePos = Input.mousePosition;
-        mousePos.z = 100f;
+        mousePos.z = 10f;
         mousePos = cam.ScreenToWorldPoint(mousePos);
         Debug.DrawRay(transform.position, mousePos - transform.position, Color.blue);
 
@@ -50,7 +50,7 @@ public class Raycast : MonoBehaviour
             RaycastHit hit;
 
 
-            if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "gun")
+            if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "gun")
             {
                 //pickGun = true;
                 PlayerGun.SetActive(true);
@@ -58,43 +58,47 @@ public class Raycast : MonoBehaviour
 
             }
 
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "KeyOne")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "KeyOne")
             {
                 Destroy(hit.collider.gameObject);
-
+                Key = true;
             }
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "KeyTwo")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "KeyTwo")
             {
                 Destroy(hit.collider.gameObject);
                 keyboss = true;
                 Debug.Log("True");
             }
 
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Sphere")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "Sphere")
             {
+                Destroy(hit.collider.gameObject);
                 sphere.SetActive(true);
+                count += 1;
+            }
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "Gen")
+            {
+                gen.SetActive(true);
                 Destroy(hit.collider.gameObject);
                 count += 1;
             }
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Gen")
-            {
-                gen.SetActive(true);
-                count += 1;
-            }
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Reactor")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "Reactor")
             {
                 reactor.SetActive(true);
+                Destroy(hit.collider.gameObject);
                 count += 1;
             }
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Healthgen")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "Healthgen")
             {
                 healthgen.SetActive(true);
+                Destroy(hit.collider.gameObject);
                 count += 1;
 
             }
-            else if (Physics.Raycast(ray, out hit, 50) && hit.collider.tag == "Balls")
+            else if (Physics.Raycast(ray, out hit, 10) && hit.collider.tag == "Balls")
             {
                 balls.SetActive(true);
+                Destroy(hit.collider.gameObject);
                 count += 1;
             }
         }

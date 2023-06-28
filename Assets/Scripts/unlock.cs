@@ -5,16 +5,32 @@ using UnityEngine;
 public class unlock : MonoBehaviour
 {
     public GameObject gate;
-    public GateKey script;
+    Raycast script;
 
-    void OnTriggerEnter(Collider other)
+
+    void Start()
     {
-        if (script.Key)
-        {
-            GetComponent<Animator>().SetTrigger("OpenDoor");
-        }
-
-       
+        script = FindObjectOfType<Raycast>();
     }
-        
+
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
+            {
+                Debug.Log("1");
+                if (script.Key)
+                {
+                    Debug.Log("SUp");
+                    GetComponent<Animator>().SetTrigger("OpenDoor");
+                }
+            }
+        }
+    }
 }
+    

@@ -21,6 +21,7 @@ TagManager:
   - Reactor
   - Gen
   - KeyTwo
+  - BossEle
   layers:
   - Default
   - TransparentFX

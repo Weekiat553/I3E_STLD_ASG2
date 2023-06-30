@@ -25,6 +25,7 @@ public class Enemy : MonoBehaviour
 
     private bool CanAttack = true;
     public bool iWanDie = false;
+    public bool ded = false;
 
     public float CurrentHealth;
     public HealthBar HealthBar;
@@ -44,6 +45,7 @@ public class Enemy : MonoBehaviour
             //Die Animation
             GetComponent<Animator>().SetTrigger("EDeathTrigger");
             iWanDie = true;
+            ded = true;
             Die();
             
         }

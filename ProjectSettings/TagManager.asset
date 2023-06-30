@@ -22,6 +22,11 @@ TagManager:
   - Gen
   - KeyTwo
   - BossEle
+  - Button
+  - FinalBoss
+  - Treasure
+  - Tele5
+  - Balls
   layers:
   - Default
   - TransparentFX

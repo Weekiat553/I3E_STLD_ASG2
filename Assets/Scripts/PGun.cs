@@ -9,11 +9,13 @@ public class PGun : MonoBehaviour
     public Camera fpsCam;
     public ParticleSystem muzzleFlash;
     public GameObject impactEffect;
+    public AudioSource shootingAudio;
 
     void Update()
     {
         if (Input.GetButtonDown("Fire1"))
         {
+            shootingAudio.Play();
             Shoot();
         }
     }

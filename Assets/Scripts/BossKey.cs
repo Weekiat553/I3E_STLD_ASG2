@@ -10,31 +10,37 @@ public class BossKey : MonoBehaviour
     public GameObject key;
     public bool unlock = false;
     Raycast script;
+    player pscript;
     void Start()
     {
         button = this.gameObject;
-        script = FindObjectOfType<Raycast>();
+        pscript = FindObjectOfType<player>();
     }
 
     // Update is called once per frame
-    void Update()
+    public void UnlockBoss()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
-            {
-                Debug.Log("1");
-                if (script.keyboss)
+       
+                if (pscript.Count == 5)
                 {
-                    Debug.Log("2");
-                    key.SetActive(true);
-                    unityEvent.Invoke();
-                    unlock = true;
+                    Debug.Log("1");
+                    if (script.keyboss)
+                    {
+                        Debug.Log("2");
+                        key.SetActive(true);
+                        unityEvent.Invoke();
+                        unlock = true;
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
-            }
-        }
+                else if (pscript.Count <= 5)
+                {
+                    return;
+                }
+            
+        
     }
 }

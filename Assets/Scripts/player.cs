@@ -24,121 +24,81 @@ public class player : MonoBehaviour
     public int swordpts = 6; // pts for sword
     public int gunpts = 7; // pts for gun
     public int scouterpts = 8;
-    public TextMeshProUGUI displayText;
     public Transform Camera;
     public GameObject CongratsMessage;
     public bool PlayerGround = true;
     public Rigidbody rb;
-    public bool iWanDie = false;
     public bool pickGun = false;
-    public GameObject gun;
     public Transform head;
     public GameObject PlayerGun;
     bool mouseClick = false;
     bool sprint;
     public Image staminaBar;
+    public bool iWanDie = false;
+    public bool pause = false;
+    public GameObject CrossHair;
+    public int Count = 0;
+    public bool keyboss = false;
+    public AudioSource CollectAudio;
+    public bool Key = false;
+    PlayerHealth script;
 
 
     void Start()
     {
-       
+        script = FindObjectOfType<PlayerHealth>();
     }
 
-  
-
-    public void OnCollisionEnter(Collision collision)
-    {
-        if (collision.gameObject.tag == "Collectables")
-        {
-            Destroy(collision.gameObject);
-            score += pts;
-            var disp = score;
-            displayText.text = "Score: " + disp;
-        }
-        else if (collision.gameObject.tag == "die")
-        {
-            GetComponent<Animator>().SetTrigger("Die");
-            iWanDie = true;
-
-        }
-        else if (collision.gameObject.tag == "Donttouch")
-        {
-            score -= 1;
-            displayText.text = "Score: " + score;
-        }
-        else if (collision.gameObject.tag == "Helmet")
-        {
-            score += helmetpts;
-            displayText.text = "Score: " + score;
-        }
-        else if (collision.gameObject.tag == "Card")
-        {
-            score += cardpts;
-            displayText.text = "Score: " + score;
-        }
-        else if (collision.gameObject.tag == "Gun")
-        {
-            score += gunpts;
-            displayText.text = "Score: " + score;
-        }
-        else if (collision.gameObject.tag == "Sword")
-        {
-            score += swordpts;
-            displayText.text = "Score: " + score;
-            displayText.text = "Final score: ";
-        }
-        else if (collision.gameObject.tag == "Scouter")
-        {
-            score += scouterpts;
-            displayText.text = "Score: " + score;
-        }
-        else if (collision.gameObject.tag == "ground")
-        {
-            PlayerGround = true;
-        }
-
-        else if (collision.gameObject.tag == "tele")
-        {
-            SceneManager.LoadScene(2);
-        }
-        else if (collision.gameObject.tag == "tele2")
-        {
-            SceneManager.LoadScene(3);
-        }
-        else if (collision.gameObject.tag == "tele3")
-        {
-            SceneManager.LoadScene(3);
-        }
-
-        else if (collision.gameObject.tag == "tele4")
-        {
-            SceneManager.LoadScene(4);
-        }
 
 
+      public void OnCollisionEnter(Collision collision)
+      {
+        
+         if (collision.gameObject.tag == "ground")
+          {
+              PlayerGround = true;
+          }
 
+          else if (collision.gameObject.tag == "tele")
+          {
+              SceneManager.LoadScene(2);
+          }
+          else if (collision.gameObject.tag == "tele2")
+          {
+              SceneManager.LoadScene(3);
+          }
+          else if (collision.gameObject.tag == "tele3")
+          {
+              SceneManager.LoadScene(3);
+          }
 
-    }
-    public void OnCollisionStay(Collision collision)
-    {
-        if (collision.gameObject.tag == "Collectables")
-        {
-            Debug.Log("Stay :" + collision.gameObject.name);
-        }
+          else if (collision.gameObject.tag == "tele4")
+          {
+              SceneManager.LoadScene(4);
+          }
+      } 
+      public void OnCollisionStay(Collision collision)
+      {
+          if (collision.gameObject.tag == "Collectables")
+          {
+              Debug.Log("Stay :" + collision.gameObject.name);
+          }
 
-    }
+      }
 
-    public void OnCollisionExit(Collision collision)
-    {
-        if (collision.gameObject.tag == "Collectables")
-        {
-            Debug.Log("Exit :" + collision.gameObject.name);
-        }
+      public void OnCollisionExit(Collision collision)
+      {
+          if (collision.gameObject.tag == "Collectables")
+          {
+              Debug.Log("Exit :" + collision.gameObject.name);
+          }
 
-    }
+      }
+
     void OnFire()
     {
         //SceneManager.LoadScene(1);
+        mouseClick = true;
     }
 
     void Awake()
@@ -166,6 +126,14 @@ public class player : MonoBehaviour
         sprint = false;
     }
 
+    void CheckHealth()
+    {
+        if (script.CurrentHealth <= 0)
+        {
+            //Debug.Log("True");
+            iWanDie = true;
+        }
+    }
     // on space key, character can jump
 
     void OnSpaceKey()
@@ -190,6 +158,13 @@ public class player : MonoBehaviour
     public void Update()
     {
 
+        CheckHealth();
+
+        if (iWanDie == true)
+        {
+            return;
+        }
+
         Vector3 forwardDir = transform.forward;
         forwardDir *= movementInput.y;
 
@@ -206,11 +181,6 @@ public class player : MonoBehaviour
 
         Camera.rotation = Quaternion.Euler(headRot);
 
-        if (iWanDie == true)
-        {
-            return;
-        }
-
         if (sprint && staminaBar.fillAmount > 0)
         {
             Debug.Log("sprint");
@@ -218,16 +188,102 @@ public class player : MonoBehaviour
             staminaBar.fillAmount -= 0.25f * Time.deltaTime;
         }
 
-        else if(sprint && staminaBar.fillAmount <= 0)
+        else if (sprint && staminaBar.fillAmount <= 0)
         {
             GetComponent<Rigidbody>().MovePosition(transform.position + (forwardDir + rightDir) * movementSpeed);
         }
 
-        else if(!sprint && staminaBar.fillAmount >= 0)
+        else if (!sprint && staminaBar.fillAmount >= 0)
         {
             GetComponent<Rigidbody>().MovePosition(transform.position + (forwardDir + rightDir) * movementSpeed);
             staminaBar.fillAmount += 0.35f * Time.deltaTime;
         }
-    }
+        
+        
+        Debug.DrawLine(transform.position, head.transform.position + (head.transform.forward));
 
+
+        RaycastHit hitInfo;
+        if (Physics.Raycast(head.transform.position, head.transform.forward, out hitInfo, 10f))
+        {
+            if (hitInfo.transform.tag == "gun" && mouseClick)
+            {
+                PlayerGun.SetActive(true);
+                CrossHair.SetActive(true);
+            }
+            else if (hitInfo.transform.tag == "tele" && mouseClick)
+            {
+                SceneManager.LoadScene(2);
+            }
+            else if (hitInfo.transform.tag == "Gen" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+                Count += 1;
+            }
+            else if (hitInfo.transform.tag == "Reactor" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+                Count += 1;
+            }
+            else if (hitInfo.transform.tag == "Sphere" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+                Count += 1;
+            }
+            else if (hitInfo.transform.tag == "HealthGen" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+                Count += 1;
+            }
+
+            else if (hitInfo.transform.tag == "Balls" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+            }
+
+            else if (hitInfo.transform.tag == "KeyOne" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+            }
+
+            else if (hitInfo.transform.tag == "KeyTwo" && mouseClick)
+            {
+                CollectAudio.Play();
+                hitInfo.transform.GetComponent<Destroy>().DestroyItem();
+                keyboss = true;
+                Count += 1;
+            }
+            else if (hitInfo.transform.tag == "Button" && mouseClick)
+            {
+                hitInfo.transform.GetComponent<Button>().ButtonClicked();
+            }
+            else if (hitInfo.transform.tag == "FinalBoss" && mouseClick)
+            {
+                hitInfo.transform.GetComponent<BossKey>().UnlockBoss();
+            }
+  
+            else if (hitInfo.transform.tag == "Treasure" && mouseClick)
+            {
+                hitInfo.transform.GetComponent<Button>().TreasureDoor();
+            }
+            else if (hitInfo.transform.tag == "gate" && mouseClick)
+            {
+                Key = true;
+                hitInfo.transform.GetComponent<unlock>().UnlockGate();
+            }
+            else if (hitInfo.transform.tag == "Tele5" && mouseClick)
+            {
+                
+            }
+
+            mouseClick = false;
+        }
+
+    }
 }

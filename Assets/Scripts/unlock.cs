@@ -5,32 +5,27 @@ using UnityEngine;
 public class unlock : MonoBehaviour
 {
     public GameObject gate;
-    Raycast script;
+    public AudioSource GateSound;
+    player script;
 
-
+     
     void Start()
     {
-        script = FindObjectOfType<Raycast>();
+        script = FindObjectOfType<player>();
     }
 
 
-    void Update()
+    public void UnlockGate()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit) && hit.collider.gameObject == gameObject)
-            {
                 Debug.Log("1");
                 if (script.Key)
                 {
                     Debug.Log("SUp");
+                    GateSound.Play();
                     GetComponent<Animator>().SetTrigger("OpenDoor");
                 }
-            }
-        }
+            
+        
     }
 }
     

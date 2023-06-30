@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PlayerHealth : MonoBehaviour
 {
@@ -10,12 +11,18 @@ public class PlayerHealth : MonoBehaviour
     public float healing;
     public float ballDamage;
     public bool death = false;
+    public UnityEvent unityEvent = new UnityEvent();
     [SerializeField] public float CurrentHealth;
+    public AudioSource DamageSound;
+    public AudioSource DeathSound;
+    public AudioSource HealSound;
+    Respawn script;
 
     void Start()
     {
         CurrentHealth = MaxHealth;
         HealthBar.SetMaxHealth(MaxHealth);
+        script = FindObjectOfType<Respawn>();
     }
     public void OnCollisionEnter(Collision collision)
     {
@@ -27,29 +34,31 @@ public class PlayerHealth : MonoBehaviour
             }
             else if (CurrentHealth < MaxHealth)
             {
+                HealSound.Play();
                 CurrentHealth += healing;
                 HealthBar.SetHealth(CurrentHealth);
                 Destroy(collision.gameObject);
             }
-        }
-        else if (collision.gameObject.tag == "damage")
-        {
-            Debug.Log("gay");
-            CurrentHealth -= ballDamage;
         }
     }
 
         public void TakeDamage(float Amount)
     {
         CurrentHealth -= Amount;
+        DamageSound.Play();
         HealthBar.SetHealth(CurrentHealth);
         if(CurrentHealth <= 0)
         {
             Debug.Log("Player died");
+            DeathSound.Play();
             death = true;
+            unityEvent.Invoke();
         }
 
-
+    }
+    
+    void Update()
+    {
 
     }
 

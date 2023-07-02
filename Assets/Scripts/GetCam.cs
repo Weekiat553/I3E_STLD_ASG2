@@ -1,3 +1,9 @@
+/*
+ * Author: Wee Kiat
+ * Date: 7/2/2023
+ * Description: Get Camera
+ */
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;

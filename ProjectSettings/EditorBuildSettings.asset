@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/final area.unity
     guid: e66becadcae2492438e98a5df584c6a1
+  - enabled: 1
+    path: Assets/Scenes/CutScene.unity
+    guid: 42195f6edcaec744388863e36ccb5c65
   m_configObjects: {}

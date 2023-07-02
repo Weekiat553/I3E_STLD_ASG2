@@ -27,6 +27,12 @@ TagManager:
   - Treasure
   - Tele5
   - Balls
+  - FixGen
+  - FixSphere
+  - FixHealth
+  - FixReactor
+  - Ship
+  - Panel
   layers:
   - Default
   - TransparentFX
